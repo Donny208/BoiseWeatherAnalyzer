@@ -14,6 +14,7 @@ def get_week_day(year, month, day) -> int:
     d = datetime(year, month, day)
     return d.weekday()
 
+
 def str_to_float(s: str) -> float:
     try:
         s = float(s)
@@ -21,9 +22,10 @@ def str_to_float(s: str) -> float:
         s = 0
     return s
 
+
 def get_monthly_data(start_date:str, end_date:str) -> dict:
     params = {"elems": [{"name": "maxt", "add": "t"}, {"name": "mint", "add": "t"}, {"name": "avgt", "add": "t"},
-                        {"name": "pcpn", "add": "t"}, {"name": "snow", "add": "t"}], "sid": "BOIthr+9", 'sDate': start_date, 'eDate': end_date}
+                        {"name": "pcpn", "add": "t"}, {"name": "snow", "add": "t"}], "sid": "ORDthr+9", 'sDate': start_date, 'eDate': end_date}  # Boise: BOIthr+9| Chicago: ORDthr+9
     return requests.get(f"https://data.rcc-acis.org/StnData?params={json.dumps(params)}&output=json").json()['data']
 
 
@@ -77,7 +79,7 @@ def calculate_weekday_vs_weekend_rain(start_date: str, end_date:str):
                     else:
                         weekday_rain_count += 1
 
-                write_to_csv("weather.csv", [x, y, z, str_to_float(data[z-1][4][0]), weekday])
+                write_to_csv("chicago_weather.csv", [x, y, z, str_to_float(data[z-1][4][0]), weekday])
                 if end['year'] == x and end['month'] == y and end['day'] == z:
                     total_count = weekday_rain_count+weekend_rain_count
                     print(f"Total days rained: {total_count}\n"
@@ -89,4 +91,4 @@ def calculate_weekday_vs_weekend_rain(start_date: str, end_date:str):
 #print(get_monthly_data("1878-01-01", "1878-01-31"))
 
 
-calculate_weekday_vs_weekend_rain("1975-01-01", "2022-06-5")
+calculate_weekday_vs_weekend_rain("1878-01-01", "2022-06-6")
